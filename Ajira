@@ -15,7 +15,7 @@ def add(a):
 #Defining strength --------------------------------------------------------------------------------------
 
 def strength(node,sten):
-    streng[node]=sten
+    streng[node]=int(sten)
 #--------------------------------------------------------------------------------------------------------
 
 #Connecting devices--------------------------------------------------------------------------------------
@@ -26,19 +26,21 @@ def connect(node1,node2):
 #-------------------------------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------------------------------
-def path(node1,node2,way):
+def path(node1,node2,way,strength):
+  if(node1[0]=="R"):
+    strength=int(strength)*2
   way.append(node1)
   if node2 in nodes[node1] :
     way.append(node2)
     pr(way,node2)
       
-  else:
+  elif(strength>0):
     for i in nodes[node1]:
       if(i in way):
         if(all(x in way for x in nodes[node1])):
           way.remove(node1)
         continue
-      path(i,node2,way)
+      path(i,node2,way,strength-1)
 #-------------------------------------------------------------------------------------------------------
 def pr(way,node2):
   i=0
