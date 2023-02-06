@@ -1,0 +1,90 @@
+loop=True
+nodes={}
+streng={}
+boolo=False
+#Adding nodes -------------------------------------------------------------------------------------------
+
+def add(a):
+    if a in nodes :
+        print("ALREADY ADDED")
+    else:
+         nodes[a]=[]
+#--------------------------------------------------------------------------------------------------------
+
+
+#Defining strength --------------------------------------------------------------------------------------
+
+def strength(node,sten):
+    streng[node]=sten
+#--------------------------------------------------------------------------------------------------------
+
+#Connecting devices--------------------------------------------------------------------------------------
+
+def connect(node1,node2):
+    nodes[node1].append(node2)
+    nodes[node2].append(node1)
+#-------------------------------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------------------------------
+def path(node1,node2,way):
+  way.append(node1)
+  if node2 in nodes[node1] :
+    way.append(node2)
+    pr(way,node2)
+      
+  else:
+    for i in nodes[node1]:
+      if(i in way):
+        if(all(x in way for x in nodes[node1])):
+          way.remove(node1)
+        continue
+      path(i,node2,way)
+#-------------------------------------------------------------------------------------------------------
+def pr(way,node2):
+  i=0
+  while(i<len(way)-1):
+    if way[i] in nodes[way[i+1]]:
+      i=i+1
+    else:
+      way.remove(way[i])
+      i=i-1
+  out=""
+  for i in way:
+    if(i==node2):
+      out+=i
+      break
+    else:
+      out+=i+"->"
+  print(out)
+#Main---------------------------------------------------------------------------------------------------
+print(
+  "HI IM YOUR ASSITANT TO MANAGE OUR NETWORK  ",
+  "\nTO ADD COMPUTER USE CODE :    ","ADD COMPUTER"
+  "\nTO CONNECT COMPUTER USE CODE :","CONNECT"
+  "\nTO GET PATH USE CODE:         ","FIND_PATH"
+)
+while(loop):
+   a=input().split(" ")
+   if "END"==a[0]:
+     loop=False
+   else:
+     c=a[0]+" "+a[1]
+     if "ADD COMPUTER" ==c or "ADD REPEATER" ==c:
+       add(a[2])
+
+     elif "SET_DEVICE_STRENGTH"==a[0]:
+       strength(a[1],a[2])
+
+     elif "CONNECT"==a[0]:
+        connect(a[1],a[2])
+
+     elif "FIND_PATH"==a[0]:
+      way=[]
+      strength=5
+      if a[1] in streng:
+        strength=streng[a[1]]
+      path(a[1],a[2],way,strength)
+
+for i in  nodes:
+  print(i+":",nodes[i])
+#--------------------------------------------------------------------------------------------------------
